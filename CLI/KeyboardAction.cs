@@ -18,7 +18,7 @@ public class KeyboardAction(string key, string optionText)
 // List of commonly used keyboard actions among app screens
 public static class KeyboardActions
 {
-    public static List<KeyboardAction> LanguageSelectScreen { get; } = [
+    public static List<KeyboardAction> CountrySelectScreen { get; } = [
         new("up/down", "move selection"),
         new("enter", "select country"),
         KeyboardAction.LineSeparator,
