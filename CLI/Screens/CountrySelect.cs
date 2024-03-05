@@ -12,7 +12,7 @@ public partial class Screens
         Console.WriteLine(
             UiFrame(
                 inner: CenteredText("Welcome. Select your country") +
-                List(countries.Select(c => $"{c.EnglishName} ({c.IsoCode})"), selectedIndex, startIndex),
+                List(countries.Select(c => $"{c.EnglishName} [{c.IsoCode}]"), selectedIndex, startIndex),
 
                 title: "Holidays",
                 verticalScroll: true
