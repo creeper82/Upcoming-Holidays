@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace HolidaysDatabase;
 
-public class API {
+public partial class API {
     private static readonly HttpClient HttpClient = new();
 
     public static async Task<List<Country>> GetCountries() {
@@ -10,11 +10,11 @@ public class API {
 
         if (response.IsSuccessStatusCode) {
             var json = await response.Content.ReadAsStringAsync();
-            var serialized = JsonSerializer.Deserialize<List<Country>>(json);
-            return serialized ?? [];
+            var deserialized = JsonSerializer.Deserialize<List<Country>>(json);
+            return deserialized ?? [];
         }
 
-        else throw new HttpRequestException(message: $"Failed to connect to database.", null, statusCode: response.StatusCode);
+        else throw new HttpRequestException(message: $"Failed to connect to API.", null, statusCode: response.StatusCode);
     }
 }
 

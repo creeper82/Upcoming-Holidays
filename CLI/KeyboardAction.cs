@@ -24,4 +24,9 @@ public static class KeyboardActions
         KeyboardAction.LineSeparator,
         new("esc", "exit app"),
     ];
+
+    public static List<KeyboardAction> ErrorScreen {get; } = [
+        new("space", "retry"),
+        new("esc", "cancel")
+    ];
 }
