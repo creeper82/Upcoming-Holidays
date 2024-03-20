@@ -21,6 +21,7 @@ public static partial class App
             try
             {
                 countries = await API.GetCountries();
+                if (countries.Count == 0) error = "Server responded with empty data.";
             }
 
             catch (HttpRequestException e)
