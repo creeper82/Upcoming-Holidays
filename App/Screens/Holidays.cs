@@ -10,7 +10,8 @@ public static partial class App
         Console.WriteLine("\nLoading...");
 
         bool running = true;
-    
+        bool useEnglish = false;
+
         DateOnly today = DateOnly.FromDateTime(DateTime.Now);
         DateOnly dateFrom = today;
         DateOnly dateTo = new(today.Year + 1, 12, 31);
@@ -22,9 +23,13 @@ public static partial class App
             Screens.Holidays(
                 holidays,
                 selectedCountry.EnglishName,
-                "EN"
+                useEnglish
             );
-            Console.ReadKey();
+
+            var handleResult = AppLogic.HandleHolidays();
+
+            if (handleResult is AppLogic.HandleHolidaysResult.SwitchLanguage) useEnglish = !useEnglish;
+            if (handleResult is AppLogic.HandleHolidaysResult.Cancel) running = false;
         }
 
     }

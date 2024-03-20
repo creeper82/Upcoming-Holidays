@@ -5,22 +5,21 @@ using HolidaysDatabase;
 
 public partial class Screens
 {
-    public static void Holidays(IEnumerable<Holiday> holidays, string countryName, string language)
+    public static void Holidays(IEnumerable<Holiday> holidays, string countryName, bool useEnglish = true)
     {
         ClearConsole();
         // Display menu
         Console.WriteLine(
             UiFrame(
-                inner: List(holidays.Select(h => $"{h.HolidayNames[0].Text} [{language}]")),
+                inner: List(holidays.Select(h => useEnglish ? h.EnglishName : h.NativeName)),
 
                 title: $"Holidays - {countryName}",
                 verticalScroll: false
             )
         );
-
-        // Display keyboard actions
-        // Console.WriteLine(
-        //     KeyboardActionList(KeyboardActions.CountrySelectScreen)
-        // );
+        
+        Console.WriteLine(
+            KeyboardActionList(KeyboardActions.HolidaysScreen)
+        );
     }
 }

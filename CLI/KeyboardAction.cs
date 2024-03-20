@@ -29,4 +29,10 @@ public static class KeyboardActions
         new("space", "retry"),
         new("esc", "cancel")
     ];
+
+    public static List<KeyboardAction> HolidaysScreen {get;} = [
+        new("s", "switch language (english <> native)"),
+        KeyboardAction.LineSeparator,
+        new("esc", "go back")
+    ];
 }
