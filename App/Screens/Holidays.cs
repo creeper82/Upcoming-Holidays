@@ -7,30 +7,60 @@ public static partial class App
 {
     public static async Task Holidays(Country selectedCountry)
     {
-        Console.WriteLine("\nLoading...");
 
-        bool running = true;
-        bool useEnglish = false;
+        bool retryConnection = true;
 
-        DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-        DateOnly dateFrom = today;
-        DateOnly dateTo = new(today.Year + 1, 12, 31);
-
-        var holidays = await API.GetHolidays(selectedCountry.IsoCode, dateFrom, dateTo);
-
-        while (running)
+        while (retryConnection)
         {
-            Screens.Holidays(
-                holidays,
-                selectedCountry.EnglishName,
-                useEnglish
-            );
+            Console.WriteLine("\nLoading...");
 
-            var handleResult = AppLogic.HandleHolidays();
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+            DateOnly dateFrom = today;
+            DateOnly dateTo = new(today.Year + 1, 12, 31);
 
-            if (handleResult is AppLogic.HandleHolidaysResult.SwitchLanguage) useEnglish = !useEnglish;
-            if (handleResult is AppLogic.HandleHolidaysResult.Cancel) running = false;
+            List<Holiday> holidays = [];
+
+            string? error = null;
+
+            try
+            {
+                holidays = await API.GetHolidays(selectedCountry.IsoCode, dateFrom, dateTo);
+            }
+
+            catch (HttpRequestException e)
+            {
+                error = "Error communicating with server. Check internet connection.\nMessage: " + e.Message;
+            }
+
+            catch (Exception) { error = "Unrecognized error occured. Sorry"; }
+
+            if (error is null)
+            {
+                retryConnection = false;
+                bool running = true;
+                bool useEnglish = false;
+
+                while (running)
+                {
+                    Screens.Holidays(
+                        holidays,
+                        selectedCountry.EnglishName,
+                        useEnglish
+                    );
+
+                    var handleResult = AppLogic.HandleHolidays();
+
+                    if (handleResult is AppLogic.HandleHolidaysResult.SwitchLanguage) useEnglish = !useEnglish;
+                    if (handleResult is AppLogic.HandleHolidaysResult.Cancel) running = false;
+                }
+            } else {
+                retryConnection = ErrorScreen("Holidays", error);
+            }
+
+
+
         }
+
 
     }
 }
