@@ -13,6 +13,9 @@ public class Holiday {
     public required HolidayName[] HolidayNames {get; set;}
 
     public string? NameForLang(string LanguageISO) => HolidayNames?.FirstOrDefault(n => n?.LanguageISO == LanguageISO, null)?.Text;
+
+    public string EnglishName => HolidayNames?.FirstOrDefault(n => n?.LanguageISO == "EN", null)?.Text ?? "no english name";
+    public string NativeName => HolidayNames?.First().Text ?? "unnamed";
 }
 
 public class HolidayName {
