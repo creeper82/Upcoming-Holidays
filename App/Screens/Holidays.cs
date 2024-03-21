@@ -25,6 +25,7 @@ public static partial class App
             try
             {
                 holidays = await API.GetHolidays(selectedCountry.IsoCode, dateFrom, dateTo);
+                if (holidays.Count == 0) error = "Server responded with empty data.";
             }
 
             catch (HttpRequestException e)
