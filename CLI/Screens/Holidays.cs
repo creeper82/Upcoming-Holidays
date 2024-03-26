@@ -11,7 +11,7 @@ public partial class Screens
         // Display menu
         Console.WriteLine(
             UiFrame(
-                inner: List(holidays.Select(h => useEnglish ? h.EnglishName : h.NativeName)),
+                inner: HolidayList(holidays, useEnglish),
 
                 title: $"Holidays - {countryName}",
                 verticalScroll: false
