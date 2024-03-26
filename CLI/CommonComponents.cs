@@ -60,16 +60,8 @@ public static class Components
 
     internal static void ClearConsole()
     {
-        try
-        {
-            Console.Clear();
-            Console.WriteLine();
-        }
-        // Other method to clear console
-        catch (Exception)
-        {
-            Console.Write("\x1B[2J\x1B[H");
-        }
+        Console.Clear();
+        Console.WriteLine("\x1b[3J");
     }
 
     // Adds margin to before and after string
