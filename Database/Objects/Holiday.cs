@@ -14,7 +14,9 @@ public class Holiday {
 
     public string? NameForLang(string LanguageISO) => HolidayNames?.FirstOrDefault(n => n?.LanguageISO == LanguageISO, null)?.Text;
 
+    [JsonIgnore]
     public string EnglishName => HolidayNames?.FirstOrDefault(n => n?.LanguageISO == "EN", null)?.Text ?? "no english name";
+    [JsonIgnore]
     public string NativeName => HolidayNames?.First().Text ?? "unnamed";
 }
 
