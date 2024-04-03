@@ -14,7 +14,7 @@ public partial class Screens
                 inner: HolidayList(holidays, useEnglish),
 
                 title: $"Holidays - {countryName}",
-                verticalScroll: false
+                verticalScroll: true
             )
         );
         
