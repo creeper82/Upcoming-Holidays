@@ -61,7 +61,6 @@ public static class Components
     internal static void ClearConsole()
     {
         Console.Clear();
-        Console.WriteLine("\x1b[3J");
     }
 
     // Adds margin to before and after string
