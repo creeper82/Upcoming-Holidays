@@ -1,4 +1,5 @@
 namespace CLI;
+using HolidaysDatabase;
 
 public static class ConsoleInput
 {
@@ -33,18 +34,33 @@ public static class Components
         }
     }
 
+
+
+    // app specific components
+    public static string HolidayList(IEnumerable<Holiday> holidays, bool useEnglish)
+    {
+        string result = "";
+
+        foreach(Holiday h in holidays) {
+            result += (useEnglish ? h.EnglishName : h.NativeName) + "\n";
+
+            if (h.StartDate == h.EndDate) {
+                result += h.StartDate.ToLongDateString();
+            } else {
+                result += h.StartDate.ToShortDateString() + " ~ " + h.EndDate.ToShortDateString();
+            }
+
+            result += "\n\n";
+        }
+
+        return result;
+    }
+
+    // general components
+
     internal static void ClearConsole()
     {
-        try
-        {
-            Console.Clear();
-            Console.WriteLine();
-        }
-        // Other method to clear console
-        catch (Exception)
-        {
-            Console.Write("\x1B[2J\x1B[H");
-        }
+        Console.Clear();
     }
 
     // Adds margin to before and after string

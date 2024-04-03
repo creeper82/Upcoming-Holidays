@@ -4,7 +4,7 @@ using CLI;
 using HolidaysDatabase;
 
 public static partial class AppLogic {
-    public static bool HandleCountrySelect(ChoiceList<Country> choiceList) {
+    public static async Task<bool> HandleCountrySelect(ChoiceList<Country> choiceList) {
         ConsoleKey consoleKey = ConsoleInput.GetConsoleKey();
 
         if (choiceList.SelectedItem is not null)
@@ -18,12 +18,11 @@ public static partial class AppLogic {
                 break;
             case ConsoleKey.Enter:
                 if (choiceList.SelectedItem is not null) {
-                    // in future this will open list of holidays for {SelectedItem.CountryIso}
+                    await App.Holidays(choiceList.SelectedItem);
                 }
                 break;
             case ConsoleKey.Escape:
                 return false;
-
         }
 
         return true;
