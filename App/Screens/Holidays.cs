@@ -41,10 +41,15 @@ public static partial class App
                 bool running = true;
                 bool useEnglish = false;
 
+                ScrollableList<Holiday> holidaysScrollList = new(holidays)
+                {
+                    PaginationCount = 5
+                };
+
                 while (running)
                 {
                     Screens.Holidays(
-                        holidays,
+                        holidaysScrollList.PaginatedChoices,
                         selectedCountry.EnglishName,
                         useEnglish
                     );
@@ -52,7 +57,9 @@ public static partial class App
                     var handleResult = AppLogic.HandleHolidays();
 
                     if (handleResult is AppLogic.HandleHolidaysResult.SwitchLanguage) useEnglish = !useEnglish;
-                    if (handleResult is AppLogic.HandleHolidaysResult.Cancel) running = false;
+                    else if (handleResult is AppLogic.HandleHolidaysResult.MoveForward) holidaysScrollList.MoveForward();
+                    else if (handleResult is AppLogic.HandleHolidaysResult.MoveBackward) holidaysScrollList.MoveBackward();
+                    else if (handleResult is AppLogic.HandleHolidaysResult.Cancel) running = false;
                 }
             } else {
                 retryConnection = ErrorScreen("Holidays", error);

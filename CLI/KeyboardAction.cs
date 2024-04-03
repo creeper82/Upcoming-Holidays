@@ -25,13 +25,14 @@ public static class KeyboardActions
         new("esc", "exit app"),
     ];
 
-    public static List<KeyboardAction> ErrorScreen {get; } = [
+    public static List<KeyboardAction> ErrorScreen { get; } = [
         new("space", "retry"),
         new("esc", "cancel")
     ];
 
-    public static List<KeyboardAction> HolidaysScreen {get;} = [
+    public static List<KeyboardAction> HolidaysScreen { get; } = [
         new("s", "switch language (english <> native)"),
+        new("up/down", "scroll list"),
         KeyboardAction.LineSeparator,
         new("esc", "go back")
     ];
