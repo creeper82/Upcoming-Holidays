@@ -41,12 +41,16 @@ public static class Components
     {
         string result = "";
 
-        foreach(Holiday h in holidays) {
+        foreach (Holiday h in holidays)
+        {
             result += (useEnglish ? h.EnglishName : h.NativeName) + "\n";
 
-            if (h.StartDate == h.EndDate) {
+            if (h.StartDate == h.EndDate)
+            {
                 result += h.StartDate.ToLongDateString();
-            } else {
+            }
+            else
+            {
                 result += h.StartDate.ToShortDateString() + " ~ " + h.EndDate.ToShortDateString();
             }
 
@@ -92,7 +96,7 @@ public static class Components
     private static string[] DivideStringIntoArray(this string sourceString, int maxElementLength)
     {
         // check if splitting is needed
-        if (sourceString.Length <= maxElementLength) return new string[1] { sourceString };
+        if (sourceString.Length <= maxElementLength) return [sourceString];
         else
         {
             // split the string
