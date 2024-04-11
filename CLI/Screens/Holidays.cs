@@ -17,7 +17,7 @@ public partial class Screens
                 verticalScroll: true
             )
         );
-        
+
         Console.WriteLine(
             KeyboardActionList(KeyboardActions.HolidaysScreen)
         );

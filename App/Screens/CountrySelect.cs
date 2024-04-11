@@ -7,7 +7,7 @@ public static partial class App
 {
     public static async Task CountrySelect()
     {
-        
+
         bool retryConnection = true;
 
         while (retryConnection)

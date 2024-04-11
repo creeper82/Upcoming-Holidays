@@ -61,7 +61,9 @@ public static partial class App
                     else if (handleResult is AppLogic.HandleHolidaysResult.MoveBackward) holidaysScrollList.MoveBackward();
                     else if (handleResult is AppLogic.HandleHolidaysResult.Cancel) running = false;
                 }
-            } else {
+            }
+            else
+            {
                 retryConnection = ErrorScreen("Holidays", error);
             }
 

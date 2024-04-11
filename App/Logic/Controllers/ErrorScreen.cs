@@ -4,7 +4,7 @@ using CLI;
 
 public static partial class AppLogic
 {
-    public class HandleErrorScreenResult 
+    public class HandleErrorScreenResult
     {
         public class Retry : HandleErrorScreenResult { }
 
