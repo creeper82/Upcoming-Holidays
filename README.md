@@ -21,6 +21,21 @@ The app is self-contained, meaning there should theoretically be no need to inst
 ### Linux note ###
 There is a release build for Linux. It should work (permit execution and execute the Upcoming-holidays file), but I prefer to focus on the Windows version
 
+## Screenshots ##
+
+### Home screen ###
+![Home screen](screenshots/menu.png)
+
+### Holidays ###
+![Holidays](screenshots/holidays.png)
+
+Native language
+
+---
+
+![Holidays translated](screenshots/holidays_translated.png)
+Translated to english
+
 ## Built with ##
 This app was built using C# with [Microsoft .NET 8.0.4](https://dotnet.microsoft.com/en-us/download)
 
