@@ -45,6 +45,8 @@ public static class Components
         {
             result += (useEnglish ? h.EnglishName : h.NativeName) + "\n";
 
+            result += "<blue>";
+
             if (h.StartDate == h.EndDate)
             {
                 result += h.StartDate.ToLongDateString();
@@ -53,6 +55,8 @@ public static class Components
             {
                 result += h.StartDate.ToShortDateString() + " ~ " + h.EndDate.ToShortDateString();
             }
+
+            result += "</>";
 
             result += "\n\n";
         }

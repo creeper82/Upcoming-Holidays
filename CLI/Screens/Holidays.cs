@@ -8,8 +8,8 @@ public partial class Screens
     public static void Holidays(IEnumerable<Holiday> holidays, string countryName, bool useEnglish = true)
     {
         ClearConsole();
-        // Display menu
-        Console.WriteLine(
+
+        var content = (
             UiFrame(
                 inner: HolidayList(holidays, useEnglish),
 
@@ -17,6 +17,8 @@ public partial class Screens
                 verticalScroll: true
             )
         );
+        // Display content with color formatting
+        new FormattedText(content).DisplayFormatted(useSpeed: false, newLine: true);
 
         Console.WriteLine(
             KeyboardActionList(KeyboardActions.HolidaysScreen)
