@@ -34,6 +34,8 @@ public static class Components
         }
     }
 
+    internal static int UiHeight => Console.WindowHeight;
+
 
 
     // app specific components

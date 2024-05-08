@@ -8,6 +8,7 @@ public partial class Screens
     public static void Holidays(IEnumerable<Holiday> holidays, string countryName, bool useEnglish = true)
     {
         ClearConsole();
+        
 
         var content = (
             UiFrame(
@@ -23,5 +24,9 @@ public partial class Screens
         Console.WriteLine(
             KeyboardActionList(KeyboardActions.HolidaysScreen)
         );
+
+        if (UiHeight < 30) {
+            new FormattedText("<yellow>Please increase the console height.</>").DisplayFormatted(useSpeed: false, newLine: true);
+        }
     }
 }
