@@ -34,6 +34,7 @@ Native language
 ---
 
 ![Holidays translated](screenshots/holidays_translated.png)
+
 Translated to english
 
 ## Built with ##
