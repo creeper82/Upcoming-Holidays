@@ -1,4 +1,4 @@
-﻿using HolidaysApp;
+﻿using UpcomingHolidays;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 

@@ -1,7 +1,10 @@
-namespace CLI;
+namespace UpcomingHolidays.CLI;
 
-using static Components;
+using SharpViews;
 using HolidaysDatabase;
+
+using static SharpViews.Components;
+using static UpcomingHolidays.CLI.Components;
 
 public partial class Screens
 {

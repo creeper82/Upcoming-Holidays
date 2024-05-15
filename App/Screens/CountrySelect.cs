@@ -1,7 +1,8 @@
-namespace HolidaysApp;
+namespace UpcomingHolidays;
 
 using HolidaysDatabase;
 using CLI;
+using SharpViews;
 
 public static partial class App
 {
@@ -45,14 +46,13 @@ public static partial class App
                     PaginationCount = 5
                 };
 
-                countryChoiceList.choices = countryChoiceList.choices.OrderBy(c => c.EnglishName);
+                countryChoiceList.UpdateChoices(countryChoiceList.Choices.OrderBy(c => c.EnglishName));
 
                 bool running = true;
 
                 while (running)
                 {
-                    countryChoiceList.CheckOutOfBoundsPointer();
-                    Screens.CountrySelect(countryChoiceList.PaginatedChoices, countryChoiceList.selectedIndex, countryChoiceList.PaginationStartIndex);
+                    Screens.CountrySelect(countryChoiceList.PaginatedChoices, countryChoiceList.SelectedIndex, countryChoiceList.PaginationStartIndex);
                     running = await AppLogic.HandleCountrySelect(countryChoiceList);
                 }
             }

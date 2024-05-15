@@ -1,4 +1,4 @@
-namespace HolidaysApp;
+namespace UpcomingHolidays;
 
 using CLI;
 

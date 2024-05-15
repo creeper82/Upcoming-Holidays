@@ -1,7 +1,8 @@
-namespace HolidaysApp;
+namespace UpcomingHolidays;
 
 using HolidaysDatabase;
 using CLI;
+using SharpViews;
 
 public static partial class App
 {

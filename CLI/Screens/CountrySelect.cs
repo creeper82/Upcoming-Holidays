@@ -1,6 +1,6 @@
-namespace CLI;
+namespace UpcomingHolidays.CLI;
 
-using static Components;
+using static SharpViews.Components;
 using HolidaysDatabase;
 
 public partial class Screens

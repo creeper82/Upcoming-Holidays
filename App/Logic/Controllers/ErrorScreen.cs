@@ -1,6 +1,6 @@
-namespace HolidaysApp;
+namespace UpcomingHolidays;
 
-using CLI;
+using SharpViews;
 
 public static partial class AppLogic
 {

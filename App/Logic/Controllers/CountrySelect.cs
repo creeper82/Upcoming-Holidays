@@ -1,7 +1,7 @@
-namespace HolidaysApp;
+namespace UpcomingHolidays;
 
-using CLI;
 using HolidaysDatabase;
+using SharpViews;
 
 public static partial class AppLogic
 {
@@ -9,7 +9,7 @@ public static partial class AppLogic
     {
         ConsoleKey consoleKey = ConsoleInput.GetConsoleKey();
 
-        if (choiceList.SelectedItem is not null)
+        if (choiceList.SelectedChoice is not null)
 
             switch (consoleKey)
             {
@@ -20,15 +20,14 @@ public static partial class AppLogic
                     choiceList.MoveForward();
                     break;
                 case ConsoleKey.Enter:
-                    if (choiceList.SelectedItem is not null)
+                    if (choiceList.SelectedChoice is not null)
                     {
-                        await App.Holidays(choiceList.SelectedItem);
+                        await App.Holidays(choiceList.SelectedChoice);
                     }
                     break;
                 case ConsoleKey.Escape:
                     return false;
             }
-
         return true;
     }
 }
