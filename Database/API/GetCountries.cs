@@ -5,7 +5,9 @@ namespace HolidaysDatabase;
 public partial class API
 {
     // Main HttpClient used for all API requests
-    private static readonly HttpClient HttpClient = new();
+    private static readonly HttpClient HttpClient = new() {
+        Timeout = TimeSpan.FromSeconds(3)
+    };
 
     public static async Task<List<Country>> GetCountries()
     {

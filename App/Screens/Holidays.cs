@@ -28,6 +28,11 @@ public static partial class App
                 if (holidays.Count == 0) error = "Server responded with empty data.";
             }
 
+            catch (Exception e) when (e.InnerException is TimeoutException)
+            {
+                error = "The request has timed out. Check internet connection, or try again if it is slow";
+            }
+
             catch (HttpRequestException e)
             {
                 error = "Error communicating with server. Check internet connection.\nMessage: " + e.Message;
