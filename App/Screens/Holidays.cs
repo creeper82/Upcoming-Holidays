@@ -38,10 +38,10 @@ public static partial class App
 
                 var handleResult = AppLogic.HandleHolidays();
 
-                if (handleResult is AppLogic.HandleHolidaysResult.SwitchLanguage) useEnglish = !useEnglish;
-                else if (handleResult is AppLogic.HandleHolidaysResult.MoveForward) holidaysScrollList.MoveForward();
-                else if (handleResult is AppLogic.HandleHolidaysResult.MoveBackward) holidaysScrollList.MoveBackward();
-                else if (handleResult is AppLogic.HandleHolidaysResult.Cancel) running = false;
+                if (handleResult == AppLogic.HandleHolidaysResult.SwitchLanguage) useEnglish = !useEnglish;
+                else if (handleResult == AppLogic.HandleHolidaysResult.MoveForward) holidaysScrollList.MoveForward();
+                else if (handleResult == AppLogic.HandleHolidaysResult.MoveBackward) holidaysScrollList.MoveBackward();
+                else if (handleResult == AppLogic.HandleHolidaysResult.Cancel) running = false;
             }
         }
     }

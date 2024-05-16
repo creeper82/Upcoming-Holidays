@@ -4,25 +4,21 @@ using SharpViews;
 
 public static partial class AppLogic
 {
-    public class HandleHolidaysResult
-    {
-        public class SwitchLanguage : HandleHolidaysResult { }
-        public class MoveForward : HandleHolidaysResult { }
-        public class MoveBackward : HandleHolidaysResult { }
-        public class ContinueLoop : HandleHolidaysResult { }
-        public class Cancel : HandleHolidaysResult { }
+    public enum HandleHolidaysResult {
+        ContinueLoop, Cancel, MoveForward, MoveBackward, SwitchLanguage
     }
+
     public static HandleHolidaysResult HandleHolidays()
     {
         ConsoleKey consoleKey = ConsoleInput.GetConsoleKey();
 
         return consoleKey switch
         {
-            ConsoleKey.S => new HandleHolidaysResult.SwitchLanguage(),
-            ConsoleKey.Escape => new HandleHolidaysResult.Cancel(),
-            ConsoleKey.DownArrow => new HandleHolidaysResult.MoveForward(),
-            ConsoleKey.UpArrow => new HandleHolidaysResult.MoveBackward(),
-            _ => new HandleHolidaysResult.ContinueLoop(),
+            ConsoleKey.S => HandleHolidaysResult.SwitchLanguage,
+            ConsoleKey.Escape => HandleHolidaysResult.Cancel,
+            ConsoleKey.DownArrow => HandleHolidaysResult.MoveForward,
+            ConsoleKey.UpArrow => HandleHolidaysResult.MoveBackward,
+            _ => HandleHolidaysResult.ContinueLoop,
         };
     }
 

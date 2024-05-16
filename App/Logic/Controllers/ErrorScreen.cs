@@ -4,13 +4,8 @@ using SharpViews;
 
 public static partial class AppLogic
 {
-    public class HandleErrorScreenResult
-    {
-        public class Retry : HandleErrorScreenResult { }
-
-        public class Cancel : HandleErrorScreenResult { }
-
-        public class ContinueLoop : HandleErrorScreenResult { }
+    public enum HandleErrorScreenResult {
+        ContinueLoop, Retry, Cancel,
     }
 
     public static HandleErrorScreenResult HandleErrorScreen()
@@ -19,9 +14,9 @@ public static partial class AppLogic
 
         return consoleKey switch
         {
-            ConsoleKey.Spacebar => new HandleErrorScreenResult.Retry(),
-            ConsoleKey.Escape => new HandleErrorScreenResult.Cancel(),
-            _ => new HandleErrorScreenResult.ContinueLoop(),
+            ConsoleKey.Spacebar => HandleErrorScreenResult.Retry,
+            ConsoleKey.Escape => HandleErrorScreenResult.Cancel,
+            _ => HandleErrorScreenResult.ContinueLoop,
         };
     }
 }
