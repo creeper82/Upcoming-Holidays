@@ -13,10 +13,10 @@ public static partial class App
         DateOnly dateFrom = today;
         DateOnly dateTo = new(today.Year + 1, 12, 31);
 
-        List<Holiday>? holidays = await TryGetOrHandleErrorAsync<HttpErrorHandler, List<Holiday>>(() =>
-        {
-            return API.GetHolidays(selectedCountry.IsoCode, dateFrom, dateTo);
-        }, loadingText: true);
+        var holidays = await TryGetOrHandleErrorAsync<HttpErrorHandler, List<Holiday>>(
+            () => API.GetHolidays(selectedCountry.IsoCode, dateFrom, dateTo),
+            loadingText: true
+        );
 
         if (holidays is not null)
         {
