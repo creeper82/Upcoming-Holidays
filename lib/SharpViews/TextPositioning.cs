@@ -5,39 +5,28 @@ namespace SharpViews;
 /// </summary>
 public static class TextPositioning
 {
-    public static int UiWidth => Components.UiWidth;
-    public static int UiHeight => Components.UiHeight;
-
     /// <summary>
-    /// Returns a string (doesn't display it to console), where <c>text</c> is surrounded by spaces or other character to fill out the
-    /// entire screen width. If you use <c>FormattedText</c>, don't put the colors and tags into <c>text</c>. Instead, add the tags before and after
+    /// Returns a string (doesn't display it), where <c>text</c> is surrounded by spaces or other character to fill out the
+    /// entire screen width. If you use formatted text, don't put the colors and tags into <c>text</c>. Instead, add the tags before and after
     /// this function.
     /// <b>Text will be truncated</b> ("...") if it exceeds the console width.
     /// </summary>
+    /// <param name="uiWidth">Width of the window.</param>
     /// <param name="text">The text to center.</param>
     /// <param name="SurroundChar">The character used to surround the text (default: spaces)</param>
-    /// <param name="isFormatted">Whether the text is bracket-formatted (see <c>FormattedText</c>). Needed for accurate length calculation.
-    /// <b>This is very unstable</b>. Please try to add the formatting tags before and after this function, not into the <c>text</c> argument.</param>
     /// <remarks>
-    /// Use <c>Console.WriteLine()</c> or remember to add a newline when displaying the text somewhere. Filling the whole console line isn't
+    /// Remember to add a newline when displaying the text somewhere. Filling the whole line isn't
     /// stable, and sometimes leaves a bit of free space at the line end.
     /// </remarks>
-    public static string CenteredText(string text, char SurroundChar = ' ', bool isFormatted = false)
+    public static string CenteredText(int uiWidth, string text, char SurroundChar = ' ')
     {
-        int textLength = isFormatted ? new FormattedText(text).PureText.Length : text.Length;
 
-        if (text == "") return Repeat(SurroundChar, UiWidth);
+        if (text == "") return Repeat(SurroundChar, uiWidth);
 
-        if (textLength > UiWidth) text = Truncate(text, UiWidth, explicitFormattedLength: textLength);
+        if (text.Length > uiWidth) text = Truncate(text, uiWidth);
 
-        float surroundLength = (UiWidth - textLength) / 2f;
+        float surroundLength = (uiWidth - text.Length) / 2f;
         if (surroundLength < 0) surroundLength = 0;
-
-        if (isFormatted) return (
-            "<instant>" + Repeat(SurroundChar, (int)Math.Ceiling(surroundLength)) + "<normal>" +
-            text +
-            "<instant>" + Repeat(SurroundChar, (int)Math.Floor(surroundLength))
-        );
 
         return (
             Repeat(SurroundChar, (int)Math.Ceiling(surroundLength)) +
@@ -57,15 +46,16 @@ public static class TextPositioning
     /// <summary>
     /// Aligns <c>text</c> to the screen's right with spaces, or a char provided in <c>surroundChar</c>. A newline is automatically added at the end.
     /// </summary>
-    /// <param name="text"Text to align></param>
+    /// <param name="uiWidth">Width of the window.</param>
+    /// <param name="text">Text to align.</param>
     /// <param name="surroundChar">Character to surround the text with. Spaces by default.</param>
     /// <returns>A string aligned to the right.</returns>
-    public static string RightAlignedText(string text, char surroundChar = ' ')
+    public static string RightAlignedText(int uiWidth, string text, char surroundChar = ' ')
     {
         // if text is empty, simply fill the whole width with surroundChars
-        if (text == "") return Repeat(surroundChar, UiWidth) + "\n";
+        if (text == "") return Repeat(surroundChar, uiWidth) + "\n";
 
-        int surroundLength = UiWidth - text.Length;
+        int surroundLength = uiWidth - text.Length;
 
         if (surroundLength < 0) return text;
 
@@ -91,12 +81,33 @@ public static class TextPositioning
     /// <summary>
     /// If given string is longer than <c>width</c>, then trim it by adding "..." at the end, and return it.
     /// </summary>
-    /// <param name="explicitFormattedLength">If the text is bracket-formatted (<c>FormattedText</c>), then this length will be used for calculations.
-    /// Used mainly from within <c>CenteredText</c>. Basically, this length doesn't include bracket tags.</param>
-    public static string Truncate(string str, int width, int? explicitFormattedLength = null)
+    /// <param name="str">String to truncate.</param>
+    /// <param name="width">Desired output width (including "...").</param>
+    public static string Truncate(string str, int width)
     {
-        if ((explicitFormattedLength ?? str.Length) > width) return str[..(width - 3)] + (explicitFormattedLength is not null ? "...</>" : "...");
+        if (str.Length > width) return str[..(width - 3)] + "...";
         return str;
+    }
+
+    internal static string[] DivideStringIntoArray(this string sourceString, int maxElementLength)
+    {
+        // check if splitting is needed
+        if (sourceString.Length <= maxElementLength) return [sourceString];
+        else
+        {
+            // split the string
+            int parts = (int)Math.Ceiling(sourceString.Length / (float)maxElementLength);
+            string[] dividedString = new string[parts];
+
+            for (int part = 0; part < parts; part++)
+            {
+                if (part == parts - 1) dividedString[part] = sourceString[(part * maxElementLength)..];
+                else dividedString[part] = sourceString.Substring(part * maxElementLength, maxElementLength);
+            }
+
+            return dividedString;
+        }
+
     }
 }
 

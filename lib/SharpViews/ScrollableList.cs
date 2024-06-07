@@ -17,12 +17,12 @@ public class ScrollableList<T>(IEnumerable<T> choices, int initialPosition = 0)
     public int Position {get; private set;} = initialPosition;
 
     /// <summary>
-    /// Count of elements that are visible at once. By default, <c>9</c>.
+    /// Count of elements that are visible at once. By default, <c>6</c>.
     /// </summary>
     /// <remarks>
     /// Use <c>PaginatedChoices</c> to get the list content trimmed to only have such number of elements.
     /// </remarks>
-    public int PaginationCount = 9;
+    public int PaginationCount = 6;
 
     private int MaxAllowedPosition => Math.Max(Choices.Count() - PaginationCount, 0);
 

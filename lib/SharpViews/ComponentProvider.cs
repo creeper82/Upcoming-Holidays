@@ -1,84 +1,38 @@
 namespace SharpViews;
 
-public static class Components
+/// <summary>
+/// A class with all the commonly used components. Used by the SharpViews screens.
+/// </summary>
+/// <param name="dimensionsProvider">The provider of window dimensions, e.g. an <c>IFullOutputHandler</c></param>
+public class ComponentProvider(IDimensionsProvider dimensionsProvider)
 {
-    public static int UiWidth
-    {
-        get
-        {
-            try
-            {
-                return Console.WindowWidth - 2;
-            }
+    private int UiWidth => dimensionsProvider.UiWidth;
+    // private int UiHeight => dimensionsProvider.UiHeight;
 
-            // Default window width if it couldn't be acquired
-            catch (Exception)
-            {
-                return 64;
-            }
-
-        }
-    }
-
-    public static int UiHeight
-    {
-        get
-        {
-            try
-            {
-                return Console.WindowHeight;
-            }
-
-            catch (Exception) { return 32; }
-        }
-    }
-
-    public static void ClearConsole()
-    {
-        Console.Clear();
-    }
-
-    // Adds margin to before and after string
+    /// <inheritdoc cref="TextPositioning.Margin(string, int, char)"/>
     public static string Margin(string str, int margin = 1, char marginChar = ' ') => TextPositioning.Margin(str, margin, marginChar);
 
     private static string Repeat(char ch, int length) => TextPositioning.Repeat(ch, length);
 
     private static string Spaces(int count) => Repeat(' ', count);
 
-    private static string Truncate(string str, int width) => TextPositioning.Truncate(str, width);
+    /// <summary>
+    /// Creates a centered horizontal line out of the given parameters.
+    /// </summary>
+    /// <param name="ch">Character to make the line out of, e.g. a hyphen.</param>
+    /// <param name="length">Length of the line.</param>
+    /// <returns>A string with the centered horizontal line.</returns>
+    public string HorizontalLine(char ch, int? length = null) => CenteredText(Repeat(ch, length ?? UiWidth));
 
-    private static string[] DivideStringIntoArray(this string sourceString, int maxElementLength)
-    {
-        // check if splitting is needed
-        if (sourceString.Length <= maxElementLength) return [sourceString];
-        else
-        {
-            // split the string
-            int parts = (int)Math.Ceiling(sourceString.Length / (float)maxElementLength);
-            string[] dividedString = new string[parts];
-
-            for (int part = 0; part < parts; part++)
-            {
-                if (part == parts - 1) dividedString[part] = sourceString[(part * maxElementLength)..];
-                else dividedString[part] = sourceString.Substring(part * maxElementLength, maxElementLength);
-            }
-
-            return dividedString;
-        }
-
-    }
-
-    public static string HorizontalLine(char ch, int? length = null) => CenteredText(Repeat(ch, length ?? UiWidth));
-
-    private static string SingleLineCenteredText(string text, char surroundChar = ' ', bool isFormatted = false) => TextPositioning.CenteredText(text, surroundChar, isFormatted);
+    private string SingleLineCenteredText(string text, char surroundChar = ' ') => TextPositioning.CenteredText(UiWidth, text, surroundChar);
 
     /// <summary>
     /// Aligns <c>text</c> to the screen's right with spaces, or a char provided in <c>surroundChar</c>. A newline is automatically added at the end.
     /// </summary>
-    /// <param name="text"Text to align></param>
+    /// <param name="text">Text to align.</param>
     /// <param name="surroundChar">Character to surround the text with. Spaces by default.</param>
     /// <returns>A string aligned to the right.</returns>
-    public static string RightAlignedText(string text, char surroundChar = ' ') => TextPositioning.RightAlignedText(text, surroundChar);
+    public string RightAlignedText(string text, char surroundChar = ' ') => TextPositioning.RightAlignedText(UiWidth, text, surroundChar);
 
     /// <summary>
     /// Centers each line of the text horizontally. If the text is too long, it is wrapped (moved into new line). A newline is automatically added at the end.
@@ -87,27 +41,25 @@ public static class Components
     /// <param name="surroundChar">Character to surround the text with. Spaces by default.</param>
     /// <remarks>If you want to truncate the long text ("..."), instead of wrapping it, use <c>CenteredText</c> instead.</remarks>
     /// <returns>A string with the centered text.</returns>
-    public static string CenteredWrappedText(string text, char surroundChar = ' ')
+    public string CenteredWrappedText(string text, char surroundChar = ' ')
         => CenteredText(string.Join("\n", text.Split("\n").SelectMany(line => line.DivideStringIntoArray(UiWidth))), surroundChar);
 
     /// <summary>
-    /// Centers each line of the text horizontally. <b>If the text is too long, it is truncated ("...").</b> If you use <c>FormattedText</c>,
+    /// Centers each line of the text horizontally. <b>If the text is too long, it is truncated ("...").</b> If you use formatted text,
     /// don't put the colors and tags into <c>text</c>. Instead, add the tags before and after this function.
     /// <para>A newline is automatically added at the end.</para>
     /// </summary>
     /// <param name="text">Text to center</param>
     /// <param name="surroundChar">Character to surround the text with. Spaces by default.</param>
-    /// <param name="isFormatted">Whether the text is bracket-formatted (see <c>FormattedText</c>). Needed for accurate length calculation.
-    /// <b>This is very unstable</b>. Please try to add the formatting tags before and after this function, not into the <c>text</c> argument.</param>
     /// <remarks>If you want to wrap the long text ito new lines instead of truncating it, use <c>CenteredWrappedText</c>. </remarks>
     /// <returns>String with the centered text.</returns>
-    public static string CenteredText(string text, char surroundChar = ' ', bool isFormatted = false)
+    public string CenteredText(string text, char surroundChar = ' ')
     {
         var lines = text.Split("\n");
 
         // Center each line separately, and then join the lines with newline (\n)
         return string.Join("\n",
-            lines.Select(line => SingleLineCenteredText(line, surroundChar, isFormatted))
+            lines.Select(line => SingleLineCenteredText(line, surroundChar))
         ) + "\n";
     }
 
@@ -121,7 +73,7 @@ public static class Components
     /// <param name="startIndex">The index of the top-most element. Only affects the <c>selectedIndex</c> calculation. You may use
     /// <c>ChoiceList.PaginationStartIndex</c>.</param>
     /// <returns></returns>
-    public static string List(IEnumerable<string> sourceStrings, int? selectedIndex = null, int startIndex = 0)
+    public string List(IEnumerable<string> sourceStrings, int? selectedIndex = null, int startIndex = 0)
     {
         const string NONSELECTED_STRING = "[ ]";
         const string SELECTED_STRING = "[•]";
@@ -161,7 +113,7 @@ public static class Components
     /// <param name="horizontalScroll">Whether to display horizontal scroll arrows.</param>
     /// <param name="verticalScroll">Whether to display vertical scroll arrows.</param>
     /// <returns>The frame as string.</returns>
-    public static string UiFrame(
+    public string UiFrame(
         string inner,
         string title = "",
         bool horizontalScroll = false,
@@ -188,7 +140,7 @@ public static class Components
     /// </summary>
     /// <param name="options">A list of the keyboard actions to display</param>
     /// <returns>A string with the keyboard actions.</returns>
-    public static string KeyboardActionList(List<KeyboardAction> options)
+    public string KeyboardActionList(List<KeyboardAction> options)
     {
         return string.Join(null, options.Select(option => option + "\n"));
     }

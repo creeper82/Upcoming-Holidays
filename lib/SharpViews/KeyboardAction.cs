@@ -5,13 +5,17 @@ namespace SharpViews;
 /// </summary>
 /// <param name="key">Key to trigger the action, e.g. <c>Space</c></param>
 /// <param name="actionName">Name of the action, e.g. <c>Open selected article</c></param>
-/// <remarks>To display a list of keyboard actions, use <c>Components.KeyboardActionList</c>. It's best to create a class
+/// <remarks>It's best to create a class
 /// with lists of keyboard actions for each screen. Tip: <c>KeyboardAction.LineSeparator</c> acts as an empty line to separate actions in a list.</remarks>
 public class KeyboardAction(string key, string actionName)
 {
-    public string Key = key;
-    public string OptionText = actionName;
+    internal string Key = key;
+    internal string OptionText = actionName;
 
+    /// <summary>
+    /// Converts the keyboard action to [Key] - [OptionText] format
+    /// </summary>
+    /// <returns>A string representation of the keyboard action.</returns>
     public override string ToString()
     {
         // Empty option string is used as a line separator

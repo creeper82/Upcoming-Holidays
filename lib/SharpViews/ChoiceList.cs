@@ -23,7 +23,7 @@ public class ChoiceList<T>(IEnumerable<T> choices, int initialIndex = 0) where T
     public int SelectedIndex {get; private set;} = initialIndex;
 
     /// <summary>
-    /// Count of visible elements at once. By default, <c>9</c>.
+    /// Count of visible elements at once. By default, <c>5</c>.
     /// </summary>
     /// <remarks>
     /// Use <c>PaginatedChoices</c> to get the list content trimmed to only have such number of elements.
