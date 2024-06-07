@@ -43,4 +43,4 @@ This app was built using C# with [Microsoft .NET 8.0.4](https://dotnet.microsoft
 ## Documentation
 You can find app usage instructions in the help menu. The app is rather intuitive to use, just follow the on-screen messages and possible options
 
-CLI is basically the same as in my [Flashcards project](https://github.com/creeper82/Flashcards). You may browse its' folders, if you want to read the CLI documentation.
+This project uses my [SharpViews](https://github.com/creeper82/SharpViews) framework.
