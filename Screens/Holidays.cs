@@ -17,12 +17,12 @@ public static partial class Screens
         };
 
 
-        public override List<KeyboardAction>? KeyboardActions => [
+        public override List<KeyboardAction>? KeyboardActions => DataFetched ? [
             new("s", "switch language (english <> native)"),
                 new("up/down", "scroll list"),
                 KeyboardAction.LineSeparator,
                 new("esc", "go back")
-        ];
+        ] : [];
 
         public override void DisplayScreen()
         {
@@ -72,7 +72,10 @@ public static partial class Screens
         {
             if (!DataFetched)
             {
-                await ErrorUtils.TryOrHandleErrorAsync<HttpExceptionTranslator>(ShowLoadingAndFetchHolidays);
+                if (!await ErrorUtils.TryOrHandleErrorAsync<HttpExceptionTranslator>(ShowLoadingAndFetchHolidays))
+                {
+                    App.CloseScreen();
+                }
             }
             else
             {

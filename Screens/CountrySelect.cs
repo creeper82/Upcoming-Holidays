@@ -14,12 +14,12 @@ public static partial class Screens
             PaginationCount = 5
         };
 
-        public override List<KeyboardAction>? KeyboardActions => [
+        public override List<KeyboardAction>? KeyboardActions => DataFetched ? [
             new("up/down", "move selection"),
             new("enter", "select country"),
             KeyboardAction.LineSeparator,
-            new("esc", "exit app"),
-        ];
+            new("esc", "exit app")
+        ] : [];
 
         public override void DisplayScreen()
         {
@@ -46,7 +46,10 @@ public static partial class Screens
         {
             if (!DataFetched)
             {
-                await ErrorUtils.TryOrHandleErrorAsync<HttpExceptionTranslator>(ShowLoadingAndFetchCountries);
+                if (!await ErrorUtils.TryOrHandleErrorAsync<HttpExceptionTranslator>(ShowLoadingAndFetchCountries))
+                {
+                    App.CloseScreen();
+                }
             }
             else
             {
