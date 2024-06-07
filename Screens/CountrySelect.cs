@@ -78,7 +78,7 @@ public static partial class Screens
         private async Task ShowLoadingAndFetchCountries()
         {
             F.WriteFormatted(F.Yellow + "Loading..." + F.Reset);
-            CountryChoiceList.UpdateChoices(await API.GetCountries());
+            CountryChoiceList.UpdateChoices((await API.GetCountries()).OrderBy(c => c.EnglishName));
             DataFetched = true;
         }
     }
