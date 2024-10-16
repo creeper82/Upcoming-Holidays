@@ -16,6 +16,7 @@ public static partial class Screens
 
         public override List<KeyboardAction>? KeyboardActions => DataFetched ? [
             new("up/down", "move selection"),
+            new("a~z", "search by letter"),
             new("enter", "select country"),
             KeyboardAction.LineSeparator,
             new("esc", "exit app")
@@ -53,7 +54,8 @@ public static partial class Screens
             }
             else
             {
-                switch (Input.GetKey(clearBuffer: true))
+                var key = Input.GetKey(clearBuffer: true);
+                switch (key)
                 {
                     case ConsoleKey.UpArrow:
                         CountryChoiceList.MoveBackward();
@@ -74,6 +76,13 @@ public static partial class Screens
                         break;
                     case ConsoleKey.Escape:
                         App.CloseScreen(); break;
+                    default:
+                        char keyChar = char.ToUpper((char)key);
+                        if (keyChar >= 'A' && keyChar <= 'Z' ) {
+                            CountryChoiceList.MoveToChoice(c => c.EnglishName[0] == keyChar);
+                        }
+                        
+                        break;
                 }
             }
         }
