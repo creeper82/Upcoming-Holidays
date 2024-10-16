@@ -15,7 +15,7 @@ namespace SharpViews;
 /// <c>Components.List</c>'s arguments. The first argument must be a string list, so if your choice list consists of specific objects, you should
 /// for example cast their names into an array. e.g. with LINQ: <c>choices.Select(c => c.Name)</c></para>
 /// </remarks>
-public class ChoiceList<T>(IEnumerable<T> choices, int initialIndex = 0) where T : class
+public class ChoiceList<T>(List<T> choices, int initialIndex = 0) where T : class
 {
     /// <summary>
     /// Currently selected index.
@@ -31,16 +31,15 @@ public class ChoiceList<T>(IEnumerable<T> choices, int initialIndex = 0) where T
     public int PaginationCount = 5;
 
     /// <summary>
-    /// Currently selected list element (not index). It should be fast, but try to use it only when the user takes action with an item,
-    /// and not on every scroll.
+    /// The currently selected list element (not index)
     /// </summary>
     public T? SelectedChoice =>
-        Choices.Any() ? Choices.Skip(SelectedIndex).Take(1).FirstOrDefault() : null;
+        (SelectedIndex >= 0 && SelectedIndex < Choices.Count) ? Choices[SelectedIndex] : null;
     
     /// <summary>
     /// Largest index in the list.
     /// </summary>
-    public int MaxIndex => Math.Max(Choices.Count() - 1, 0);
+    public int MaxIndex => Math.Max(Choices.Count - 1, 0);
 
     /// <summary>
     /// Index of the top-most visible element, based on current scroll position.
@@ -59,7 +58,7 @@ public class ChoiceList<T>(IEnumerable<T> choices, int initialIndex = 0) where T
     /// Change the list choices to new ones, and automatically fix the selection mark, if the selection went out of bounds.
     /// </summary>
     /// <param name="newChoices">The new list of choices.</param>
-    public void UpdateChoices(IEnumerable<T> newChoices) {
+    public void UpdateChoices(List<T> newChoices) {
         Choices = newChoices;
         CheckOutOfBoundsPointer();
     }
@@ -68,7 +67,7 @@ public class ChoiceList<T>(IEnumerable<T> choices, int initialIndex = 0) where T
     /// All the list elements, ignoring scroll position and <c>PaginationCount</c>. You should use <c>PaginatedChoices</c> to get the visible choices,
     /// and <c>UpdateChoices()</c> to set new choices.
     /// </summary>
-    public IEnumerable<T> Choices {get; private set;} = choices;
+    public List<T> Choices {get; private set;} = choices;
 
     /// <summary>
     /// Return the elements that should be visible based on the current scroll position. Change <c>PaginationCount</c> if you want to allow more or less
@@ -78,7 +77,7 @@ public class ChoiceList<T>(IEnumerable<T> choices, int initialIndex = 0) where T
     /// Unlike <c>ScrollableList</c>, the scrolling behavior is selected item-centered, i.e. the selected item will be in the center, and not at the top.
     /// Idk how to explain it. You will see when you try it out.
     /// </remarks>
-    public IEnumerable<T> PaginatedChoices => Choices.Skip(PaginationStartIndex).Take(PaginationCount);
+    public List<T> PaginatedChoices => Choices.GetRange(PaginationStartIndex, PaginationCount);
     
     /// <summary>
     /// Scrolls the list down.
@@ -112,13 +111,32 @@ public class ChoiceList<T>(IEnumerable<T> choices, int initialIndex = 0) where T
     /// <summary>
     /// Instantly scrolls the list to given element, if it exists in the choice list.
     /// </summary>
+    /// <remarks>
+    /// When working with data that dynamically changes, the references often change, e.g. during deserialization from JSON.
+    /// In this case you may want to put a predicate into the argument, such as <c>item => item.Name == "DesiredValue"</c>, or similar.
+    /// </remarks>
     /// <param name="item">Element to scroll to.</param>
     public void MoveToChoice(T item)
     {
-        int index = Choices.ToList().IndexOf(item);
+        int index = Choices.IndexOf(item);
+        
         if (index != -1) {
-            SelectedIndex = Choices.ToList().IndexOf(item);
+            SelectedIndex = Choices.IndexOf(item);
             CheckOutOfBoundsPointer();
         }
+    }
+
+    /// <summary>
+    /// Instantly scroll the list to first element that satisfies the criteria, if it exists in the choice list.
+    /// </summary>
+    /// <remarks>
+    /// Useful if your data is e.g. deserialized from JSON often, and the object references are no longer equal.
+    /// In this case, you can find the desired item by for example its' ID, or whatever makes it unique, like: <c>item => item.ID == 122</c>, or similar.
+    /// </remarks>
+    /// <param name="criteria"></param>
+    public void MoveToChoice(Predicate<T> criteria) {
+        var foundElement = Choices.Find(criteria);
+
+        if (foundElement is not null) MoveToChoice(foundElement);
     }
 }

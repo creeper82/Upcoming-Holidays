@@ -9,7 +9,7 @@ namespace SharpViews;
 /// <typeparam name="T">Type of the list elements. You can't have mixed types.</typeparam>
 /// <param name="choices">List elements.</param>
 /// <param name="initialPosition">The initial list position (index). By default, <c>0</c>.</param>
-public class ScrollableList<T>(IEnumerable<T> choices, int initialPosition = 0)
+public class ScrollableList<T>(List<T> choices, int initialPosition = 0)
 {
     /// <summary>
     /// Index of the top-most visible element, based on current scroll position.
@@ -24,18 +24,18 @@ public class ScrollableList<T>(IEnumerable<T> choices, int initialPosition = 0)
     /// </remarks>
     public int PaginationCount = 6;
 
-    private int MaxAllowedPosition => Math.Max(Choices.Count() - PaginationCount, 0);
+    private int MaxAllowedPosition => Math.Max(Choices.Count - PaginationCount, 0);
 
     /// <summary>
     /// All the list elements, ignoring scroll position and <c>PaginationCount</c>. You should use <c>PaginatedChoices</c>.
     /// </summary>
-    public IEnumerable<T> Choices {get; private set;} = choices;
+    public List<T> Choices {get; private set;} = choices;
 
     /// <summary>
     /// Change the list elements to new ones, and automatically fix the scroll position, if it went out of bounds.
     /// </summary>
     /// <param name="newElements">The new list elements.</param>
-    public void UpdateChoices(IEnumerable<T> newElements) {
+    public void UpdateChoices(List<T> newElements) {
         Choices = newElements;
         CheckOutOfBoundsPointer();
     }
@@ -49,7 +49,7 @@ public class ScrollableList<T>(IEnumerable<T> choices, int initialPosition = 0)
     /// <para> <c>PaginatedChoices</c> will return: <i>apple, banana, cucumber</i>, and after calling <c>MoveForward</c>:
     /// <i>banana, cucumber, potato</i> </para>
     /// </remarks>
-    public IEnumerable<T> PaginatedChoices => Choices.Skip(Position).Take(PaginationCount);
+    public IEnumerable<T> PaginatedChoices => Choices.GetRange(Position, PaginationCount);
 
     /// <summary>
     /// Scrolls the list down.
