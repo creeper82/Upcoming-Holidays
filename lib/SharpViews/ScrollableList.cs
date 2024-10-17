@@ -49,7 +49,7 @@ public class ScrollableList<T>(List<T> choices, int initialPosition = 0)
     /// <para> <c>PaginatedChoices</c> will return: <i>apple, banana, cucumber</i>, and after calling <c>MoveForward</c>:
     /// <i>banana, cucumber, potato</i> </para>
     /// </remarks>
-    public IEnumerable<T> PaginatedChoices => Choices.GetRange(Position, PaginationCount);
+    public List<T> PaginatedChoices => Choices.GetRange(Position, PaginationCount);
 
     /// <summary>
     /// Scrolls the list down.
